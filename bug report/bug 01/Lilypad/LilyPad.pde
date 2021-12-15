@@ -57,20 +57,40 @@ FloodPlot flood;
 float time=0;
 SaveData dat;
 String datapath = "rotate/";
-int resolution_powIndex = 7;//resolution = 2^7
+
+///////Ini_global
+//float Re_test = 6000;//Re=6000
+//float St_test = 0.45;//Str=0.45
+//int resolution_test = 32; final int Chord_lengthbyY = 4;//gird resolution
+///////Ini_test
+//float Fish_distanceR = 0.5;
+//float Rotate_centerR = 0.3;
+//float Chord_ratio = .12;
+//float Max_theta = PI/180*5;
+//float Delta_theta = PI/12;
+///////Input_end
+//float Rotate_omega = 2*PI*St_test/resolution_test;
+//float nu = resolution_test/Re_test;
+//int n=resolution_test * Chord_lengthbyY;//all resolution in direction Y 
+//float Fish_distance = Fish_distanceR*resolution_test;
+//float Rotate_center = Rotate_centerR*resolution_test;
+//float T_omega = 2*PI/Rotate_omega; 
+//float Fxcount=0;float Pinputcount=0;
+///////Ini_endB
+
+int resolution = 32;final int Chord_lengthbyY = 8;//gird resolution
 float ratio = 0.5;//ratio of h and a 
-float length_rate = 0.125;//length compare to the resolution
-float rotation_init = 180;//attack angle of the ellipse
+float rotation_init = 180;//attack angle of the ellipse//you should use PI here --tree
 int start_point = 3;//the center position of the ellipse
 int max_time = 180000;//max simulation time 
-int n=(int)pow(2,resolution_powIndex);
-int m=(int)pow(2,resolution_powIndex);
-float ellipseL = length_rate*n;
+int n=resolution*Chord_lengthbyY ;
+int m=resolution*Chord_lengthbyY;
+
 void setup(){
   //float eccentricity=sqrt(1-ratio*ratio);//eccentricity temporarily not used
   size(800,800);      
   Window window = new Window(n,m);
-  ellipse1 = new EllipseBody(ellipseL*start_point, m/2, ellipseL, ratio, window);
+  ellipse1 = new EllipseBody(resolution*start_point, m/2, ellipseL, ratio, window);
   ellipse1.rotate_init(PI/rotation_init);
   dat = new SaveData(datapath+"One_point_pressure_test.txt", ellipse1.coords, (int)ellipseL, 8, 8, 1);
   flow = new BDIM(n,m,0.5,ellipse1,0,false);
