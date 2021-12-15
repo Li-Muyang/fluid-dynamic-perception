@@ -1,0 +1,1 @@
+Simulation shows snowflakes-like pixel, happens around 45000 timestep
