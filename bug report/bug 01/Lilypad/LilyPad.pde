@@ -84,17 +84,20 @@ void setup(){
   flood.setColorMode(1);
 }
 void draw(){
+  if (flow.QUICK) {
+      flow.dt = flow.checkCFL();
+    }
   time += flow.dt;
   flow.update(ellipse1);
   flow.update2();
   flood.display(flow.u.curl());
   ellipse1.display();
   dat.addData(time, ellipse1.pressForce(flow.p), ellipse1, flow.p); 
-  if (time % 1000 == 0) countRotate = 0;
+  if (int(time) % 1000 == 0) countRotate = 0;//for every 1000[T], rotate 1° by 10 [T]
   if(countRotate<10){//rotate shall be smooth       
     ellipse1.rotate(PI/180*0.1);//everytime rotate 0.1, in all 10 steps rotate 1
     countRotate += 1;
   }
-    
+  println(time);
   if (time>max_time) exit();
 }
