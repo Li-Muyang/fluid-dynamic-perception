@@ -1,15 +1,11 @@
 /*********************************************************
                   Main Window!
-
 Click the "Run" button to Run the simulation.
-
 Change the geometry, flow conditions, numerical parameters
 visualizations and measurements from this window.
-
 This screen has an example. Other examples are found at 
 the top of each tab. Copy/paste them here to run, but you 
 can only have one setup & run at a time.
-
 *********************************************************/
 // Circle that can be dragged by the mouse
 
@@ -17,13 +13,11 @@ can only have one setup & run at a time.
 BDIM flow;
 Body body;
 FloodPlot flood;
-
 void setup(){
   size(1000,1000);                             // display window size
   int n=(int)pow(2,7);                       // number of grid points
   float L = n/8.;                            // length-scale in grid units
   Window view = new Window(n,n);
-
   body = new EllipseBody(n/2,n/2,L,0.5,view);     // define geom
   flow = new BDIM(n,n,1.5,body);             // solve for flow using BDIM
   flood = new FloodPlot(view);               // initialize a flood plot...
@@ -62,7 +56,7 @@ int resolution = 32;final int Chord_lengthbyY = 8;//gird resolution
 float ratio = 0.5;//ratio of h and a 
 float rotation_init = 0;//attack angle of the ellipse//you should use PI here. In my code i wont use this init --tree
 int start_point = 3;//the center position of the ellipse
-int max_time = 180000;//max simulation time 
+int max_time = 10000;//max simulation time 
 int n=resolution*Chord_lengthbyY ;
 int m=resolution*Chord_lengthbyY;
 float Re = 6000;//Re=6000
@@ -71,10 +65,15 @@ int countRotate = 0;//rotate shall be smooth, see at void draw()
 
 void setup(){
   //float eccentricity=sqrt(1-ratio*ratio);//eccentricity temporarily not used
+  // datapath += args[0];
+  // int rotation_degree = Integer.parseInt(args[0]);
+  // System.out.println(args[0]);
   size(800,800);      
   Window window = new Window(n,m);
+  int rotation_degree = 10;
   ellipse1 = new EllipseBody((int)resolution*start_point, m/2, (int)resolution, ratio, window);
-  //ellipse1.rotate_init(PI/rotation_init);//i would rotate it from 0 to PI
+  ellipse1.rotate_init((PI/180)*rotation_degree);//i would rotate it from 0 to PI
+  
   dat = new SaveData(datapath+"One_point_pressure_test.txt", ellipse1.coords, resolution, 8, 8, 1);
   flow = new BDIM(n,m,0.5,ellipse1,nu,true);
 
@@ -93,11 +92,5 @@ void draw(){
   flood.display(flow.u.curl());
   ellipse1.display();
   dat.addData(time, ellipse1.pressForce(flow.p), ellipse1, flow.p); 
-  if (int(time) % 1000 == 0) countRotate = 0;//for every 1000[T], rotate 1° by 10 [T]
-  if(countRotate<10){//rotate shall be smooth       
-    ellipse1.rotate(PI/180*0.1);//everytime rotate 0.1, in all 10 steps rotate 1
-    countRotate += 1;
-  }
-  println(time);
   if (time>max_time) exit();
 }

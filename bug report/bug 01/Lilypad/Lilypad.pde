@@ -56,7 +56,7 @@ int resolution = 32;final int Chord_lengthbyY = 8;//gird resolution
 float ratio = 0.5;//ratio of h and a 
 float rotation_init = 0;//attack angle of the ellipse//you should use PI here. In my code i wont use this init --tree
 int start_point = 3;//the center position of the ellipse
-int max_time = 100;//max simulation time 
+int max_time = 10000;//max simulation time 
 int n=resolution*Chord_lengthbyY ;
 int m=resolution*Chord_lengthbyY;
 float Re = 6000;//Re=6000
@@ -70,9 +70,10 @@ void setup(){
   // System.out.println(args[0]);
   size(800,800);      
   Window window = new Window(n,m);
-  int rotation_degree = 0;
+  int rotation_degree = 10;
   ellipse1 = new EllipseBody((int)resolution*start_point, m/2, (int)resolution, ratio, window);
   ellipse1.rotate_init((PI/180)*rotation_degree);//i would rotate it from 0 to PI
+  
   dat = new SaveData(datapath+"One_point_pressure_test.txt", ellipse1.coords, resolution, 8, 8, 1);
   flow = new BDIM(n,m,0.5,ellipse1,nu,true);
 
